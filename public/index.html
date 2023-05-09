@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Word Count App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Word Count App</h1>
+  <form id="wordCountForm">
+    <label for="text">Enter text:</label>
+    <textarea id="text" name="text" required></textarea>
+    <button type="submit" id="countButton">Count words</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    const form = document.querySelector('#wordCountForm');
+    const countButton = document.querySelector('#countButton');
+    const result = document.querySelector('#result');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const inputText = document.querySelector('#text').value;
+      fetch('/count-words', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: inputText })
+      })
+        .then(response => response.text())
+        .then(data => {
+          result.textContent = data;
+        });
+    });
+  </script>
+</body>
+</html>
